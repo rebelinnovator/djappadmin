@@ -6,21 +6,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import Login from "./components/Login";
-import Register from "./components/Register";
 import Home from "./components/Home";
-import Profile from "./components/Profile";
-import BoardUser from "./components/BoardUser";
-import BoardModerator from "./components/BoardModerator";
-import BoardAdmin from "./components/BoardAdmin";
-
 import PlayList from "./components/PlayList";
-
 import PlaylistDetail from "./components/PlayListDetail";
 
+import UserManage from "./components/UserManage"
+
+
 import { logout } from "./actions/auth";
-import { clearMessage } from "./actions/message";
 
 import { history } from "./helpers/history";
+import PrivateRoute from "./helpers/PrivateRoute";
+import PrivateNode from "./helpers/PrivateNode";
+
+import {Role} from "./helpers/role"
 
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -31,7 +30,7 @@ const App = () => {
 
   useEffect(() => {
     history.listen((location) => {
-      dispatch(clearMessage()); // clear message when changing location
+      //dispatch(clearMessage()); // clear message when changing location
     });
   }, [dispatch]);
 
@@ -60,11 +59,22 @@ const App = () => {
             </li>
 
             {currentUser && (
-              <li className="nav-item">
-                <Link to={"/playlist"} className="nav-link">
-                  PlayList
-                </Link>
-              </li>
+              <PrivateNode roles={[Role.Admin,Role.SuperAdmin]}>
+                <li className="nav-item">
+                  <Link to={"/playlist"} className="nav-link">
+                    PlayList
+                  </Link>
+                </li>
+              </PrivateNode>
+            )}
+            {currentUser && (
+              <PrivateNode roles={[Role.SuperAdmin]}>
+                <li className="nav-item">
+                  <Link to={"/usermanage"} className="nav-link">
+                    UserManage
+                  </Link>
+                </li>
+              </PrivateNode>
             )}
             {/* {currentUser && (
               <li className="nav-item">
@@ -101,14 +111,16 @@ const App = () => {
 
         <div className="container mt-3">
           <Switch>
-            <Route exact path={["/", "/home"]} component={Home} />
+            <PrivateRoute exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/playlist" component={PlayList} />
-            <Route exact path="/playlistDetail/:id" component={PlaylistDetail} />
 
-            <Route exact path="/profile" component={Profile} />
+            <PrivateRoute exact path="/playlist" roles={[Role.Admin,Role.SuperAdmin]} component={PlayList}/>
+            <PrivateRoute exact path="/playlistDetail/:id" roles={[Role.Admin,Role.SuperAdmin]} component={PlaylistDetail} />
+
+            <PrivateRoute exact path="/usermanage" roles={[Role.SuperAdmin]} component={UserManage}/>
+            {/* <Route exact path="/profile" component={Profile} />
             <Route path="/user" component={BoardUser} />
-            <Route path="/admin" component={BoardAdmin} />
+            <Route path="/admin" component={BoardAdmin} /> */}
           </Switch>
         </div>
       </div>

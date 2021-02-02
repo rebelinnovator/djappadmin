@@ -23,15 +23,21 @@ const Home = () => {
       }
     );
   }, []);
-  if(!currentUser){
-    return <Redirect to="/login" />;
-  }
+  // if(!currentUser){
+  //   return <Redirect to="/login" />;
+  // }
   return (
     <div className="container">
       <header className="jumbotron">
         {/* <h3>{content}</h3> */}
+        {/* {currentUser} */}
+        
+        
         <h3>DashBoard</h3>
       </header>
+      <div className="flex-wrap d-flex justify-content-center">
+        {currentUser.role}
+      </div>
     </div>
   );
 };

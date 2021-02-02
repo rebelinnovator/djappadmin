@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//const API_URL = "http://localhost:5000/auth/";
-const API_URL = "http://72.14.189.240:5000/auth/";
+const API_URL = "http://localhost:5000/auth/";
+//const API_URL = "http://72.14.189.240:5000/auth/";
 
 
 const register = (username, email, password) => {
@@ -14,10 +14,10 @@ const register = (username, email, password) => {
 
 const login = (usermail, password) => {
   return axios
-    .post(API_URL + "login", {
+    .post(API_URL + "adminlogin", {
       email:usermail,
       password,
-      role:'user'
+      //role:'user'
     })
     .then((response) => {
       if (response.data.token) {

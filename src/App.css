@@ -30,3 +30,21 @@ label {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
+
+/*table*/
+.ReactTable{
+  width: 100%;
+}
+.rt-tr-group{
+  cursor: pointer;
+}
+.rt-td{
+  align-self: center;
+  text-align: -webkit-center;
+}
+.rt-rw-img{
+  margin: 3%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
